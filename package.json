@@ -1,0 +1,24 @@
+{
+  "name": "clawstake",
+  "version": "1.0.0",
+  "description": "Prediction market staking skill for Clawdict using testnet USDC on Base Sepolia",
+  "scripts": {
+    "compile": "hardhat compile",
+    "deploy": "hardhat run scripts/deploy.js --network baseSepolia",
+    "stake": "hardhat run scripts/stake.js --network baseSepolia",
+    "resolve": "hardhat run scripts/resolve.js --network baseSepolia",
+    "claim": "hardhat run scripts/claim.js --network baseSepolia",
+    "markets": "node scripts/markets.js"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.1.0",
+    "dotenv": "^16.3.1",
+    "ethers": "^6.9.0"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "hardhat": "^2.19.4"
+  },
+  "author": "0xTaro",
+  "license": "MIT"
+}
