@@ -1,8 +1,9 @@
 {
-  "address": "0xEdbEeE76E11A1a204F0EC3Be9B45EB824C812498",
+  "address": "0x7BCec09A3Ce891e64DecD805afcE4de9938AB474",
   "network": "ethereum-sepolia",
   "usdc": "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238",
   "deployer": "0xF3da6492ca984585C516bfb63BA4C6f75B73575C",
-  "txHash": "0x09cae8887cb96bbbb413acc45c52f20e40ff95561f9187cade063901ab9dbf4b",
-  "deployedAt": "2026-02-04T11:44:24.751Z"
+  "txHash": "0x1e2738033b828335fab70ec86e507420c5c78c0a9456f21d6d7ba07f4e6cdb16",
+  "deployedAt": "2026-02-04T13:14:38.716Z",
+  "version": "v2-improved"
 }
