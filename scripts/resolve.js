@@ -16,9 +16,9 @@ async function main() {
   }
 
   if (!slug || !outcome) {
-    console.log("Usage: npx hardhat run scripts/resolve.js --network baseSepolia -- --slug <market-slug> --outcome <yes|no>");
+    console.log("Usage: npx hardhat run scripts/resolve.js --network sepolia -- --slug <market-slug> --outcome <yes|no>");
     console.log("\nExample:");
-    console.log('  npx hardhat run scripts/resolve.js --network baseSepolia -- --slug "will-btc-hit-100k" --outcome yes');
+    console.log('  npx hardhat run scripts/resolve.js --network sepolia -- --slug "will-btc-hit-100k" --outcome yes');
     process.exit(1);
   }
 

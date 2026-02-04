@@ -1,11 +1,11 @@
 const hre = require("hardhat");
 
 async function main() {
-  const USDC_BASE_SEPOLIA = process.env.USDC_ADDRESS || "0x036CbD53842c5426634e7929541eC2318f3dCF7e";
+  const USDC_ADDRESS = process.env.USDC_ADDRESS || "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238";
 
   console.log("🦀 Deploying ClawStake...");
   console.log(`   Network: ${hre.network.name}`);
-  console.log(`   USDC: ${USDC_BASE_SEPOLIA}`);
+  console.log(`   USDC: ${USDC_ADDRESS}`);
 
   const [deployer] = await hre.ethers.getSigners();
   console.log(`   Deployer: ${deployer.address}`);
@@ -14,7 +14,7 @@ async function main() {
   console.log(`   Balance: ${hre.ethers.formatEther(balance)} ETH`);
 
   const ClawStake = await hre.ethers.getContractFactory("ClawStake");
-  const clawStake = await ClawStake.deploy(USDC_BASE_SEPOLIA);
+  const clawStake = await ClawStake.deploy(USDC_ADDRESS);
   await clawStake.waitForDeployment();
 
   const address = await clawStake.getAddress();
@@ -23,8 +23,8 @@ async function main() {
   console.log(`  1. Update .env with CLAWSTAKE_ADDRESS=${address}`);
   console.log(`  2. Approve USDC spending: usdc.approve("${address}", amount)`);
   console.log(`  3. Start staking: npm run stake`);
-  console.log(`\nVerify on BaseScan:`);
-  console.log(`  npx hardhat verify --network baseSepolia ${address} ${USDC_BASE_SEPOLIA}`);
+  console.log(`\nVerify on Etherscan:`);
+  console.log(`  npx hardhat verify --network sepolia ${address} ${USDC_ADDRESS}`);
 }
 
 main()

@@ -14,7 +14,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
  *      Markets support deadlines, cancellation, and refunds for trustless operation.
  *
  *      Built for the USDC Hackathon on Moltbook by 0xTaro.
- *      Base Sepolia testnet only.
+ *      Ethereum Sepolia testnet.
  */
 contract ClawStake is ReentrancyGuard, Ownable {
     using SafeERC20 for IERC20;
