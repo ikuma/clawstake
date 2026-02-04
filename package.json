@@ -8,7 +8,8 @@
     "stake": "hardhat run scripts/stake.js --network baseSepolia",
     "resolve": "hardhat run scripts/resolve.js --network baseSepolia",
     "claim": "hardhat run scripts/claim.js --network baseSepolia",
-    "markets": "node scripts/markets.js"
+    "markets": "node scripts/markets.js",
+    "test": "hardhat test"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^5.1.0",

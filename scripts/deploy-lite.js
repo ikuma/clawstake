@@ -2,22 +2,14 @@
 const fs = require('fs');
 const path = require('path');
 const { ethers } = require('ethers');
+require('dotenv').config();
 
-// Load .env manually
-const envPath = path.join(__dirname, '..', '.env');
-if (fs.existsSync(envPath)) {
-  fs.readFileSync(envPath, 'utf8').split('\n').forEach(line => {
-    const [key, ...vals] = line.split('=');
-    if (key && !key.startsWith('#')) process.env[key.trim()] = vals.join('=').trim();
-  });
-}
-
-const PRIVATE_KEY = process.env.DEPLOYER_PRIVATE_KEY;
-const RPC_URL = process.env.RPC_URL || 'https://ethereum-sepolia-rpc.publicnode.com';
-const USDC_ADDRESS = process.env.USDC_ADDRESS || '0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238';
+const PRIVATE_KEY = process.env.PRIVATE_KEY;
+const RPC_URL = process.env.BASE_SEPOLIA_RPC || 'https://sepolia.base.org';
+const USDC_ADDRESS = process.env.USDC_ADDRESS || '0x036CbD53842c5426634e7929541eC2318f3dCF7e';
 
 async function main() {
-  if (!PRIVATE_KEY) { console.error('Missing DEPLOYER_PRIVATE_KEY'); process.exit(1); }
+  if (!PRIVATE_KEY) { console.error('Missing PRIVATE_KEY in .env'); process.exit(1); }
 
   const buildDir = path.join(__dirname, '..', 'build');
   const abiFile = fs.readdirSync(buildDir).find(f => f.endsWith('_ClawStake.abi'));
@@ -35,28 +27,27 @@ async function main() {
   const wallet = new ethers.Wallet(PRIVATE_KEY, provider);
   const balance = await provider.getBalance(wallet.address);
 
-  console.log(`📛 Deployer: ${wallet.address}`);
-  console.log(`💰 Balance: ${ethers.formatEther(balance)} ETH`);
-  console.log(`🏗️ Deploying ClawStake (USDC: ${USDC_ADDRESS})...`);
+  console.log(`Deployer: ${wallet.address}`);
+  console.log(`Balance: ${ethers.formatEther(balance)} ETH`);
+  console.log(`Deploying ClawStake (USDC: ${USDC_ADDRESS})...`);
 
   const tx = await wallet.sendTransaction({ data: deployData });
-  console.log(`📝 TX: ${tx.hash}`);
-  console.log('⏳ Waiting for confirmation...');
+  console.log(`TX: ${tx.hash}`);
+  console.log('Waiting for confirmation...');
 
   const receipt = await tx.wait();
   const address = receipt.contractAddress;
-  const explorer = RPC_URL.includes('base') ? 'sepolia.basescan.org' : 'sepolia.etherscan.io';
 
-  console.log(`\n✅ ClawStake deployed!`);
-  console.log(`📍 Contract: ${address}`);
-  console.log(`🔍 Explorer: https://${explorer}/address/${address}`);
+  console.log(`\nClawStake deployed!`);
+  console.log(`Contract: ${address}`);
+  console.log(`Explorer: https://sepolia.basescan.org/address/${address}`);
 
   fs.writeFileSync(path.join(__dirname, '..', 'deployment.json'), JSON.stringify({
-    address, network: process.env.NETWORK || 'ethereum-sepolia',
+    address, network: 'base-sepolia',
     usdc: USDC_ADDRESS, deployer: wallet.address,
     txHash: tx.hash, deployedAt: new Date().toISOString()
   }, null, 2));
-  console.log('💾 Saved deployment.json');
+  console.log('Saved deployment.json');
 }
 
 main().catch(err => { console.error('Deploy failed:', err.message); process.exit(1); });
