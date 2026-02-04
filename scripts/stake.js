@@ -3,7 +3,8 @@ require("dotenv").config();
 
 const CLAWSTAKE_ABI = [
   "function stake(string calldata marketSlug, bool isYes, uint256 amount) external",
-  "function getMarketInfo(string calldata marketSlug) external view returns (uint256 totalYes, uint256 totalNo, bool resolved, bool outcomeYes)",
+  "function batchStake(string[] calldata slugs, bool[] calldata sides, uint256[] calldata amounts) external",
+  "function getMarketInfo(string calldata marketSlug) external view returns (uint256 totalYes, uint256 totalNo, bool resolved, bool outcomeYes, uint256 deadline, bool cancelled)",
   "function getStake(string calldata marketSlug, address staker) external view returns (uint256 amountYes, uint256 amountNo, bool claimed)",
 ];
 
@@ -32,22 +33,23 @@ async function main() {
   }
 
   const isYes = side === "yes";
-  const amountUsdc = parseFloat(amount);
-  const amountWei = BigInt(Math.round(amountUsdc * 1e6)); // USDC has 6 decimals
+  // Use ethers.parseUnits for precise decimal handling (avoids floating-point errors)
+  const amountWei = hre.ethers.parseUnits(amount, 6);
+  const amountUsdc = Number(amountWei) / 1e6;
 
   const clawstakeAddr = process.env.CLAWSTAKE_ADDRESS;
   const usdcAddr = process.env.USDC_ADDRESS || "0x036CbD53842c5426634e7929541eC2318f3dCF7e";
 
   if (!clawstakeAddr) {
-    console.error("❌ Set CLAWSTAKE_ADDRESS in .env first (deploy the contract)");
+    console.error("Set CLAWSTAKE_ADDRESS in .env first (deploy the contract)");
     process.exit(1);
   }
 
   const [signer] = await hre.ethers.getSigners();
-  console.log(`🦀 ClawStake - Staking on market`);
+  console.log(`ClawStake - Staking on market`);
   console.log(`   Staker: ${signer.address}`);
   console.log(`   Market: ${slug}`);
-  console.log(`   Side: ${isYes ? "YES ✅" : "NO ❌"}`);
+  console.log(`   Side: ${isYes ? "YES" : "NO"}`);
   console.log(`   Amount: ${amountUsdc} USDC`);
 
   const usdc = new hre.ethers.Contract(usdcAddr, USDC_ABI, signer);
@@ -58,7 +60,7 @@ async function main() {
   console.log(`   USDC Balance: ${Number(balance) / 1e6} USDC`);
 
   if (balance < amountWei) {
-    console.error(`❌ Insufficient USDC balance. Need ${amountUsdc}, have ${Number(balance) / 1e6}`);
+    console.error(`Insufficient USDC balance. Need ${amountUsdc}, have ${Number(balance) / 1e6}`);
     process.exit(1);
   }
 
@@ -68,14 +70,14 @@ async function main() {
     console.log(`\n   Approving USDC spend...`);
     const approveTx = await usdc.approve(clawstakeAddr, hre.ethers.MaxUint256);
     await approveTx.wait();
-    console.log(`   ✅ Approved`);
+    console.log(`   Approved`);
   }
 
   // Stake
   console.log(`\n   Staking...`);
   const tx = await clawstake.stake(slug, isYes, amountWei);
   const receipt = await tx.wait();
-  console.log(`   ✅ Staked! Tx: ${receipt.hash}`);
+  console.log(`   Staked! Tx: ${receipt.hash}`);
 
   // Show market state
   const info = await clawstake.getMarketInfo(slug);
@@ -83,11 +85,14 @@ async function main() {
   console.log(`   YES pool: ${Number(info.totalYes) / 1e6} USDC`);
   console.log(`   NO pool:  ${Number(info.totalNo) / 1e6} USDC`);
   console.log(`   Total:    ${(Number(info.totalYes) + Number(info.totalNo)) / 1e6} USDC`);
+  if (info.deadline > 0n) {
+    console.log(`   Deadline: ${new Date(Number(info.deadline) * 1000).toISOString()}`);
+  }
 }
 
 main()
   .then(() => process.exit(0))
   .catch((error) => {
-    console.error("❌ Error:", error.message);
+    console.error("Error:", error.message);
     process.exit(1);
   });
