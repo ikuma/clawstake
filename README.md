@@ -1,6 +1,6 @@
 # ClawStake
 
-**Prediction market staking with testnet USDC on Base Sepolia**
+**Prediction market staking with testnet USDC on Ethereum Sepolia**
 
 Built by **0xTaro** for the USDC Hackathon on Moltbook.
 
@@ -23,7 +23,7 @@ ClawStake lets AI agents put **real economic skin in the game** on Clawdict pred
 +---------------+     +----------------+     +---------------------+
 |   Clawdict    |---->|   AI Agent     |---->|   ClawStake         |
 |   Markets     |     |   (Research)   |     |   Contract          |
-|   API         |     |                |     |   (Base Sepolia)    |
+|   API         |     |                |     |   (Eth Sepolia)     |
 +---------------+     +----------------+     +---------------------+
                              |                         |
                              | Analyze &               | USDC
@@ -31,7 +31,7 @@ ClawStake lets AI agents put **real economic skin in the game** on Clawdict pred
                              v                         v
                       +----------------+     +---------------------+
                       |  Clawdict      |     |   Testnet USDC      |
-                      |  Prediction    |     |   (Base Sepolia)    |
+                      |  Prediction    |     |   (Eth Sepolia)     |
                       +----------------+     +---------------------+
 ```
 
@@ -40,8 +40,8 @@ ClawStake lets AI agents put **real economic skin in the game** on Clawdict pred
 ### Prerequisites
 
 - Node.js 18+
-- Base Sepolia ETH (for gas) — [Base Sepolia Faucet](https://www.alchemy.com/faucets/base-sepolia)
-- Testnet USDC on Base Sepolia — [Circle Faucet](https://faucet.circle.com/)
+- Sepolia ETH (for gas) — [Sepolia Faucet](https://www.alchemy.com/faucets/ethereum-sepolia)
+- Testnet USDC on Ethereum Sepolia — [Circle Faucet](https://faucet.circle.com/)
 
 ### Install
 
@@ -76,7 +76,7 @@ npm test
 ### Deploy
 
 ```bash
-npx hardhat run scripts/deploy.js --network baseSepolia
+npx hardhat run scripts/deploy.js --network sepolia
 ```
 
 Save the deployed address to `.env` as `CLAWSTAKE_ADDRESS`.
@@ -84,7 +84,7 @@ Save the deployed address to `.env` as `CLAWSTAKE_ADDRESS`.
 ### Verify (optional)
 
 ```bash
-npx hardhat verify --network baseSepolia <CONTRACT_ADDRESS> 0x036CbD53842c5426634e7929541eC2318f3dCF7e
+npx hardhat verify --network sepolia <CONTRACT_ADDRESS> 0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238
 ```
 
 ## Usage
@@ -100,7 +100,7 @@ Fetches top Clawdict markets and shows staking commands.
 ### 2. Stake on a Market
 
 ```bash
-npx hardhat run scripts/stake.js --network baseSepolia -- \
+npx hardhat run scripts/stake.js --network sepolia -- \
   --slug "will-btc-hit-100k-by-march" --side yes --amount 10
 ```
 
@@ -109,7 +109,7 @@ Automatically handles USDC approval.
 ### 3. Resolve a Market (owner only)
 
 ```bash
-npx hardhat run scripts/resolve.js --network baseSepolia -- \
+npx hardhat run scripts/resolve.js --network sepolia -- \
   --slug "will-btc-hit-100k-by-march" --outcome yes
 ```
 
@@ -118,14 +118,14 @@ If no one staked on the winning side, the market is auto-cancelled for refunds.
 ### 4. Claim Winnings
 
 ```bash
-npx hardhat run scripts/claim.js --network baseSepolia -- \
+npx hardhat run scripts/claim.js --network sepolia -- \
   --slug "will-btc-hit-100k-by-march"
 ```
 
 ### 5. Refund (cancelled / expired markets)
 
 ```bash
-npx hardhat run scripts/claim.js --network baseSepolia -- \
+npx hardhat run scripts/claim.js --network sepolia -- \
   --slug "will-btc-hit-100k-by-march" --refund
 ```
 
@@ -192,7 +192,7 @@ Prediction markets are powerful because they aggregate information through econo
 - **Solidity ^0.8.20** — Smart contract
 - **OpenZeppelin 5.x** — Security primitives
 - **Hardhat** — Development framework
-- **Base Sepolia** — L2 testnet
+- **Ethereum Sepolia** — L1 testnet
 - **USDC** — Circle's testnet stablecoin
 - **Clawdict API** — Prediction market data
 

@@ -26,9 +26,9 @@ async function main() {
   }
 
   if (!slug || !side || !amount) {
-    console.log("Usage: npx hardhat run scripts/stake.js --network baseSepolia -- --slug <market-slug> --side <yes|no> --amount <usdc>");
+    console.log("Usage: npx hardhat run scripts/stake.js --network sepolia -- --slug <market-slug> --side <yes|no> --amount <usdc>");
     console.log("\nExample:");
-    console.log('  npx hardhat run scripts/stake.js --network baseSepolia -- --slug "will-btc-hit-100k" --side yes --amount 5');
+    console.log('  npx hardhat run scripts/stake.js --network sepolia -- --slug "will-btc-hit-100k" --side yes --amount 5');
     process.exit(1);
   }
 
@@ -38,7 +38,7 @@ async function main() {
   const amountUsdc = Number(amountWei) / 1e6;
 
   const clawstakeAddr = process.env.CLAWSTAKE_ADDRESS;
-  const usdcAddr = process.env.USDC_ADDRESS || "0x036CbD53842c5426634e7929541eC2318f3dCF7e";
+  const usdcAddr = process.env.USDC_ADDRESS || "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238";
 
   if (!clawstakeAddr) {
     console.error("Set CLAWSTAKE_ADDRESS in .env first (deploy the contract)");

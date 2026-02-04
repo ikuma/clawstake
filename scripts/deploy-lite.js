@@ -5,8 +5,8 @@ const { ethers } = require('ethers');
 require('dotenv').config();
 
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
-const RPC_URL = process.env.BASE_SEPOLIA_RPC || 'https://sepolia.base.org';
-const USDC_ADDRESS = process.env.USDC_ADDRESS || '0x036CbD53842c5426634e7929541eC2318f3dCF7e';
+const RPC_URL = process.env.SEPOLIA_RPC || 'https://ethereum-sepolia-rpc.publicnode.com';
+const USDC_ADDRESS = process.env.USDC_ADDRESS || '0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238';
 
 async function main() {
   if (!PRIVATE_KEY) { console.error('Missing PRIVATE_KEY in .env'); process.exit(1); }
@@ -40,10 +40,10 @@ async function main() {
 
   console.log(`\nClawStake deployed!`);
   console.log(`Contract: ${address}`);
-  console.log(`Explorer: https://sepolia.basescan.org/address/${address}`);
+  console.log(`Explorer: https://sepolia.etherscan.io/address/${address}`);
 
   fs.writeFileSync(path.join(__dirname, '..', 'deployment.json'), JSON.stringify({
-    address, network: 'base-sepolia',
+    address, network: 'ethereum-sepolia',
     usdc: USDC_ADDRESS, deployer: wallet.address,
     txHash: tx.hash, deployedAt: new Date().toISOString()
   }, null, 2));

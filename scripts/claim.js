@@ -22,15 +22,15 @@ async function main() {
   }
 
   if (!slug) {
-    console.log("Usage: npx hardhat run scripts/claim.js --network baseSepolia -- --slug <market-slug> [--refund]");
+    console.log("Usage: npx hardhat run scripts/claim.js --network sepolia -- --slug <market-slug> [--refund]");
     console.log("\nExamples:");
-    console.log('  npx hardhat run scripts/claim.js --network baseSepolia -- --slug "will-btc-hit-100k"');
-    console.log('  npx hardhat run scripts/claim.js --network baseSepolia -- --slug "will-btc-hit-100k" --refund');
+    console.log('  npx hardhat run scripts/claim.js --network sepolia -- --slug "will-btc-hit-100k"');
+    console.log('  npx hardhat run scripts/claim.js --network sepolia -- --slug "will-btc-hit-100k" --refund');
     process.exit(1);
   }
 
   const clawstakeAddr = process.env.CLAWSTAKE_ADDRESS;
-  const usdcAddr = process.env.USDC_ADDRESS || "0x036CbD53842c5426634e7929541eC2318f3dCF7e";
+  const usdcAddr = process.env.USDC_ADDRESS || "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238";
 
   if (!clawstakeAddr) {
     console.error("Set CLAWSTAKE_ADDRESS in .env first");
